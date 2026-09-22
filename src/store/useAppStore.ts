@@ -7,7 +7,7 @@ interface AppStore {
   loads: Load[];
   trucks: Truck[];
   stats: ReturnType<typeof getDashboardStats>;
-  myMatchedLoads: string[]; // IDs of loads the user has "accepted"
+  myMatchedLoads: string[];
   initialized: boolean;
 
   initialize: () => void;
@@ -15,27 +15,20 @@ interface AppStore {
   releaseLoad: (loadId: string) => void;
 }
 
+// Pre-compute data at module level so it's ready immediately on client
+const _loads = getLoads();
+const _trucks = getTrucks();
+const _stats = getDashboardStats();
+
 export const useAppStore = create<AppStore>((set, get) => ({
-  loads: [],
-  trucks: [],
-  stats: {
-    totalActiveLoads: 0,
-    matchedLoads: 0,
-    inTransitLoads: 0,
-    activeTrucks: 0,
-    totalRevenueTL: 0,
-    preventedEmissionsKg: 0,
-    totalLoads: 0,
-  },
+  loads: _loads,
+  trucks: _trucks,
+  stats: _stats,
   myMatchedLoads: [],
-  initialized: false,
+  initialized: true,
 
   initialize: () => {
-    if (get().initialized) return;
-    const loads = getLoads();
-    const trucks = getTrucks();
-    const stats = getDashboardStats();
-    set({ loads, trucks, stats, initialized: true });
+    // Already initialized at module level, no-op
   },
 
   acceptLoad: (loadId: string) => {
