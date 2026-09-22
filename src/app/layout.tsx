@@ -5,23 +5,24 @@ import { AppInitializer } from "@/components/AppInitializer";
 
 export const metadata: Metadata = {
   title: "RotaEşle — Lojistik Rota Optimizasyon Platformu",
-  description:
-    "Boş dönüş problemini çözen akıllı yük eşleştirme platformu. Türkiye'nin lojistik verimliliğini artır.",
-  keywords: "lojistik, taşımacılık, boş dönüş, rota optimizasyonu, yük eşleştirme",
+  description: "Boş dönüş problemini çözen akıllı yük eşleştirme platformu.",
+  keywords: "lojistik, taşımacılık, boş dönüş, rota optimizasyonu",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr" suppressHydrationWarning>
       <body className="bg-slate-50 min-h-screen">
         <AppInitializer />
         <div className="flex min-h-screen">
           <Sidebar />
-          <main className="flex-1 min-w-0 overflow-auto">
+          {/* pt-14 on mobile to clear the fixed top bar */}
+          <main className="flex-1 min-w-0 overflow-auto pt-14 lg:pt-0">
             {children}
           </main>
         </div>
